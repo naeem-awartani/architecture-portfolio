@@ -1,24 +1,62 @@
-# AM — Architecture & Matter
+# Naeem Al-Awartany — Architecture Portfolio
 
-A production-ready architectural portfolio built with React, Next-compatible routing, Vinext, and the OpenAI Sites deployment runtime.
+Personal architecture portfolio, built with Next.js, React, and Tailwind CSS.
+Includes the homepage and four project case studies. Images, content, styling,
+and motion are retained from the original portfolio.
 
-## Run locally
+## GitHub Pages
 
-1. Install Node.js 22+ and pnpm.
-2. Run `pnpm install`.
-3. Run `pnpm dev` and open the printed local address.
+1. Put the contents of this project at the root of your repository, including `.github`.
+2. In repository **Settings → Pages → Build and deployment**, select **GitHub Actions**.
+3. Commit and push to `main`. The included workflow installs dependencies, builds all pages, and deploys `out`.
+4. Open **Actions → Deploy portfolio to GitHub Pages**. Once it succeeds, the website URL appears in **Settings → Pages**.
 
-## Replace content
+The workflow automatically sets the repository path, including for a custom domain or a username.github.io repository.
 
-- Project names, facts, images, and descriptions: `app/data.ts`
-- Homepage biography, skills, process, and contact copy: `app/page.tsx`
-- Reusable project case-study structure: `app/projects/[slug]/page.tsx`
-- Palette, typography, layout, diagrams, motion, and responsive rules: `app/globals.css`
-- Hero image and any future local media: `public/`
-- Site title and description: `app/layout.tsx`
+When replacing the previous project, remove these obsolete files/folders from the repository first:
+`.openai`, `vite.config.ts`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, and any `wrangler.*` configuration.
+Then copy this project's files, replacing matching files. Preserve your `.git` folder.
+Do not upload `node_modules`, `.next`, or local `.env` files.
 
-Adding a project object to `app/data.ts` automatically adds it to the homepage. Its case study is available at `/projects/[slug]` using the reusable template.
+## Local development
 
-## Build and deploy
+Install Node.js 24, then run (on Windows):
 
-Run `pnpm build` for a production build. The included `.openai/hosting.json` and Vite configuration are ready for OpenAI Sites. The same build output can also be adapted for any Cloudflare Workers-compatible host.
+```powershell
+npm.cmd install -g pnpm@11.19.0
+pnpm.cmd install --frozen-lockfile
+pnpm.cmd dev
+```
+
+Open http://localhost:3000.
+
+## Build for any static host
+
+```powershell
+$env:SITE_URL='https://your-domain.example'
+pnpm.cmd build
+```
+
+Upload the contents of `out` to the host's public root. No application server,
+database, API key, or image optimization service is required. Serve directory
+URLs with their `index.html` files and use `404.html` for missing pages.
+For a subdirectory deployment, set `NEXT_PUBLIC_BASE_PATH` before building:
+
+```powershell
+$env:NEXT_PUBLIC_BASE_PATH='/architecture-portfolio'
+$env:SITE_URL='https://naeem-awartani.github.io'
+pnpm.cmd build
+```
+
+To return to a root deployment, clear `NEXT_PUBLIC_BASE_PATH` and rebuild.
+Build-time internet access is needed for dependencies and the existing Geist
+fonts; the exported website serves those fonts locally.
+
+## Checks
+
+`pnpm lint` and `pnpm typecheck` are available. Native image tags are retained
+to preserve the supplied image presentation and work on static hosting.
+
+Deployment references:
+- https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+- https://nextjs.org/docs/app/guides/static-exports

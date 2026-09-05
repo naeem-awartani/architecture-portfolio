@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.SITE_URL || 'https://naeem-awartani.github.io'),
   title: 'Naeem Al-Awartany — Architect / Architectural Designer',
   description: 'Personal architecture portfolio of Naeem Al-Awartany, an architectural designer based in Amman, Jordan.',
   openGraph: {
